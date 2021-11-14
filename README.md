@@ -1,12 +1,11 @@
 
 # OpenAPI generated API stub
 
-Spring Framework stub
+
 
 This is spring boot project 
 
 
-mvn clean install
 ## Overview
 
 API documentaion can be found at [user-api-specification.yaml](https://github.com/mayankisrolling/user-api-repository/blob/master/src/main/resources/user-api-specification.yaml)
