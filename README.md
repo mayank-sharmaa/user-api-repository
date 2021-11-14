@@ -28,23 +28,23 @@ Once project is running database can also be accessed by browser on : [local con
 
 
 ## Dependencies used:
-#####spring-boot-starter-actuator:2.5.6
-#####spring-boot-starter:jar:2.5.6
-#####spring-boot-starter-logging:2.5.6
-#####spring-boot-starter-web:2.5.6
-#####spring-boot-starter-json:2.5.6
-#####com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.12.5
-#####org.mapstruct:mapstruct:1.4.2.Final
-#####spring-boot-starter-data-jpa:2.5.6
-#####spring-boot-starter-jdbc:2.5.6
-#####spring-boot-devtools:2.5.6
-#####com.google.code.gson:gson:2.8.9
-#####com.fasterxml.jackson.core:jackson-databind:2.13.0
-#####com.fasterxml.jackson.core:jackson-core:2.13.0
-#####com.fasterxml.jackson.core:jackson-annotations:2.13.0
+##### spring-boot-starter-actuator:2.5.6
+##### spring-boot-starter:jar:2.5.6
+##### spring-boot-starter-logging:2.5.6
+##### spring-boot-starter-web:2.5.6
+##### spring-boot-starter-json:2.5.6
+##### com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.12.5
+##### org.mapstruct:mapstruct:1.4.2.Final
+##### spring-boot-starter-data-jpa:2.5.6
+##### spring-boot-starter-jdbc:2.5.6
+##### spring-boot-devtools:2.5.6
+##### com.google.code.gson:gson:2.8.9
+##### com.fasterxml.jackson.core:jackson-databind:2.13.0
+##### com.fasterxml.jackson.core:jackson-core:2.13.0
+##### com.fasterxml.jackson.core:jackson-annotations:2.13.0
 ##### Springfox , Swagger , Lombok
 
-###Plugins:
+### Plugins:
 
 OpenAPI generator , maven-compiler-plugin,spring-boot-maven-plugin
 
