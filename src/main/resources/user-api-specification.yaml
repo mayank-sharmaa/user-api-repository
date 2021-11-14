@@ -1,0 +1,1149 @@
+openapi: 3.0.1
+info:
+  title: User API
+  description: This API provides various functionality related to User and User's Role.
+  version: 1.0.0
+  contact:
+    email: mayankisrolling@gmail.com
+  license:
+    name: MIT
+    url : https://opensource.org/licenses/MIT
+externalDocs:
+  description: Find the source code on GitHub
+  url: https://github.com/mayankisrolling/user-api
+servers:
+  - url: http://localhost:9000/v1
+tags:
+  - name: User
+    description: All API's related to User operation
+  - name: User Role
+    description: All API's related to UserRole operation
+  - name: Unit
+    description: All API's related to Unit operation
+  - name: Role
+    description: All API's related to Role operation
+
+paths:
+
+  /user:
+    post:
+      tags:
+        - User
+      summary: Create a new user
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      description: Add new User using this api.
+      operationId: createUser
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        201:
+          description: User created succesfully
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse403'
+        405:
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse405'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse415'
+        500:
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse500'
+
+    put:
+      tags:
+        - User
+      summary: Update an existing user
+
+      operationId: updateUser
+      parameters:
+        - name: X-Request-ID
+          in: header
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        description: Updated user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        200:
+          description: User  updated succesfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse403'
+        405:
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse405'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse415'
+        500:
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse500'
+  /user/all:
+    get:
+      tags:
+        - User
+      summary: List all users
+      operationId: getAllUsers
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse403'
+        405:
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse405'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse415'
+        500:
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse500'
+
+
+  /user/username/{username}:
+    get:
+      tags:
+        - User
+      summary: Get user by user name
+      operationId: getUserByName
+      parameters:
+        - name: username
+          in: path
+          description: 'The name that needs to be fetched. Use user1 for testing. '
+          required: true
+          schema:
+            type: string
+        - name: X-Request-ID
+          in: header
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+          200:
+            description: successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Users'
+              application/xml:
+                schema:
+                  $ref: '#/components/schemas/Users'
+
+          400:
+            description: Bad request
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse'
+          403:
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse403'
+          405:
+            description: Method not allowed
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse405'
+          415:
+            description: Unsupported Media Type
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse415'
+          500:
+            description: Internal error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse500'
+  /user/unitId/{unitId}:
+    get:
+      tags:
+        - User
+      summary: List all Users with atleast one role in the unit and there roles
+      operationId: getAllUserAndRoleInUnit
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: unitId
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Users'
+
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse403'
+        405:
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse405'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse415'
+        500:
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse500'
+  /user/{unitId}/{timestamp}:
+    get:
+      tags:
+        - User
+      summary: List all users with at least one valid user role at a given unit at a given time
+      operationId: getAllUserWithAtleastOneValidRoleAtGivenTime
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: path
+          name: unitId
+          schema:
+            type: integer
+            format: int64
+          required: true
+        - name: timestamp
+          in: path
+          description: 'timestamp'
+          required: true
+          schema:
+              type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Users'
+
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse403'
+        405:
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse405'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse415'
+        500:
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse500'
+  /user/{username}/{version}:
+    delete:
+      tags:
+        - User
+      summary: Delete an existing user. A user can only be deleted if there are no user roles for that user.
+      operationId: deleteUser
+      parameters:
+        - name: username
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+        - name: version
+          in: path
+          description: version should be same as current version
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: X-Request-ID
+          in: header
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: User deleted succesfully
+        204:
+          description: User  to be deleted not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response204'
+
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse403'
+        405:
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse405'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse415'
+        500:
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse500'
+  /userRole:
+    post:
+      tags:
+        - User Role
+      summary: Create a new user role
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      description: Add new User Role using this api.
+      operationId: createUserRole
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRole'
+        required: true
+      responses:
+        201:
+          description: User Role created succesfully
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse403'
+        405:
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse405'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse415'
+        500:
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse500'
+
+    put:
+      tags:
+        - User Role
+      summary: Update an existing user role
+
+      operationId: updateUserRole
+      parameters:
+        - name: X-Request-ID
+          in: header
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRole'
+        required: true
+      responses:
+        200:
+          description: User Role updated succesfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRole'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse403'
+        405:
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse405'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse415'
+        500:
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse500'
+
+  /userRole/all/{userId}/{unitId}/{givenTimeStamp}:
+    get:
+      tags:
+        - User Role
+      summary: List only valid user roles for a given user id and unit id at a given timestamp
+      operationId: getAllUsersByUserIdAndUnitIdAtGivenTime
+      parameters:
+        - name: X-Request-ID
+          in: header
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - name: userId
+          in: path
+          description: 'User Id '
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: unitId
+          in: path
+          description: 'Unit Id '
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: givenTimeStamp
+          in: path
+          description: 'Given timestamp'
+          required: true
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoles'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse403'
+        405:
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse405'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse415'
+        500:
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse500'
+
+  /userRole/all/{userId}/{unitId}:
+    get:
+      tags:
+        - User Role
+      summary: List all user roles for a given user id and unit id
+      operationId: getAllUsersByUserIdAndUnitId
+      parameters:
+        - name: X-Request-ID
+          in: header
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - name: userId
+          in: path
+          description: 'User Id '
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: unitId
+          in: path
+          description: 'Unit Id '
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoles'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse403'
+        405:
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse405'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse415'
+        500:
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse500'
+  /userRole/{userId}/{unitId}/{roleId}/{version}:
+    delete:
+      tags:
+        - User Role
+      summary: Delete an existing user role
+      operationId: deleteUserRole
+      parameters:
+        - name: userId
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: unitId
+          in: path
+          description: Unit that needs to be deleted
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: roleId
+          in: path
+          description:  Role  needs to be deleted
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Request-ID
+          in: header
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - name: version
+          in: path
+          schema:
+            type: integer
+            format: int32
+          required: true
+      responses:
+        200:
+          description: User Role deleted succesfully
+        204:
+          description: User role to be deleted not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response204'
+
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse403'
+        405:
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse405'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse415'
+        500:
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse500'
+  /unit/all:
+    get:
+      tags:
+        - Unit
+      summary: List all units
+      operationId: getAllUnits
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Units'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse403'
+        405:
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse405'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse415'
+        500:
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse500'
+
+  /role/all:
+    get:
+      tags:
+        - Role
+      summary: List all roles
+      operationId: getAllRoles
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Roles'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse403'
+        405:
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse405'
+        415:
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse415'
+        500:
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse500'
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - username
+
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 15
+        version:
+          type: integer
+          format: int32
+          example: 2
+        username:
+          type: string
+          minLength: 1
+          maxLength: 50
+          nullable: false
+          example: "Jessica Smith"
+
+        role:
+                $ref: '#/components/schemas/Role'
+
+        unit:
+            $ref: '#/components/schemas/Unit'
+
+
+    Unit:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 18
+        version:
+          type: integer
+          format: int64
+          example: 2
+        unitName:
+          type: string
+          minLength: 1
+          maxLength: 50
+          nullable: false
+          example: "Oslo UniversitySykehus"
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 18
+        version:
+          type: integer
+          format: int64
+          example: 2
+        roleName:
+          type: string
+          minLength: 1
+          maxLength: 50
+          nullable: false
+          example: "Manager"
+
+    Users:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+
+    Units:
+      type: array
+      items:
+        $ref: '#/components/schemas/Unit'
+    Roles:
+      type: array
+      items:
+        $ref: '#/components/schemas/Role'
+    UserWithRolesinUnits:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserWithRolesinUnit'
+    UserWithRolesinUnit:
+      type: object
+      properties:
+        userid:
+          type: integer
+          format: int64
+          example: 15
+        username:
+          type: string
+          example: "Alice"
+        roleid:
+          type: integer
+          format: int64
+          example: 15
+        rolename:
+          type: string
+          example: "Endoscopist administration"
+        unitid:
+          type: integer
+          format: int64
+          example: 15
+        unitname:
+          type: string
+          example: "Kreftregisteret"
+
+
+
+
+    UserRole:
+      type: object
+      required:
+        - userId
+        - unitId
+        - roleId
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1010
+        version:
+          type: integer
+          format: int32
+          example: 1
+        userId:
+          type: integer
+          format: int64
+          example: 4
+        unitId:
+          type: integer
+          format: int64
+          example: 15
+        roleId:
+          type: integer
+          format: int64
+          example: 106
+        validFrom:
+          type: string
+          format: date-time
+          example: "2018-02-05T12:54:12Z"
+        validTo:
+          type: string
+          format: date-time
+          example: "2020-02-05T12:54:12Z"
+    UserRoles:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserRole'
+
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+        - timestamp
+      properties:
+        code:
+          type: string
+          example: "SC-001|SC-002"
+        message:
+          type: string
+          example: "Invalid Request"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2018-02-05T12:54:12Z"
+
+    Response204:
+      type: object
+      required:
+        - code
+        - message
+        - timestamp
+      properties:
+        code:
+          type: string
+          example: "SC-008"
+        message:
+          type: string
+          example: "Resource to be deleted not found"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2018-02-05T12:54:12Z"
+
+
+    ErrorResponse403:
+      type: object
+      required:
+        - code
+        - message
+        - timestamp
+      properties:
+        code:
+          type: string
+          example: "SC-011"
+        message:
+          type: string
+          example: "User is not authorized"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2018-02-05T12:54:12Z"
+    ErrorResponse405:
+      type: object
+      required:
+        - errorCode
+        - errorMessage
+        - timestamp
+      properties:
+        errorCode:
+          type: string
+          example: "SC-012"
+        errorMessage:
+          type: string
+          example: "Method is not allowed"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2018-02-05T12:54:12Z"
+
+    ErrorResponse406:
+      type: object
+      required:
+        - errorCode
+        - errorMessage
+        - timestamp
+      properties:
+        errorCode:
+          type: string
+          example: "SC-013"
+        errorMessage:
+          type: string
+          example: "Not acceptable"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2018-02-05T12:54:12Z"
+
+
+    ErrorResponse415:
+      type: object
+      required:
+        - errorCode
+        - errorMessage
+        - timestamp
+      properties:
+        errorCode:
+          type: string
+          example: "SC-014"
+        errorMessage:
+          type: string
+          example: "Unsupported media type"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2018-02-05T12:54:12Z"
+    ErrorResponse500:
+      type: object
+      required:
+        - code
+        - message
+        - timestamp
+      properties:
+        code:
+          type: string
+          example: "SC-009"
+        message:
+          type: string
+          example: "Internal error"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2018-02-05T12:54:12Z"
+
