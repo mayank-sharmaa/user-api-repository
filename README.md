@@ -10,6 +10,9 @@ This is spring boot project
 
 API documentaion can be found at [user-api-specification.yaml](https://github.com/mayankisrolling/user-api-repository/blob/master/src/main/resources/user-api-specification.yaml)
 
+API specification in Swagger editor can be found here :[Swagger UI](https://editor.swagger.io/?raw=https://github.com/mayankisrolling/user-api-repository/blob/master/src/main/resources/user-api-specification.yaml) 
+
+
 All the APIs structure and DTO classes are generated using [OpenAPI Generator](https://openapi-generator.tech) maven plugin.
 
 API specifcations are written  using the [OpenAPI-Spec](https://openapis.org).
